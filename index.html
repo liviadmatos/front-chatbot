@@ -3,48 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Refúgio · Terapia por IA</title>
+    <title>MenteSerena · Espaço de Escuta</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="ambient-bg"></div>
-    
-    <main class="main-therapy">
-        <div class="glass-panel">
-            <div class="session-bar">
-                <div class="session-meta">
-                    <span class="session-label">Sessão atual</span>
-                    <span class="session-status" id="connection-status">offline</span>
-                </div>
-                <div class="session-actions">
-                    <button id="iniciarBtn" class="action-btn subtle">iniciar</button>
-                    <button id="limparBtn" class="action-btn subtle">limpar</button>
-                    <button id="encerrarBtn" class="action-btn subtle">encerrar</button>
-                </div>
-            </div>
-
-            <div class="chat-core">
-                <div class="therapist-intro">
-                    <div class="intro-symbol"></div>
-                    <h1>TerapIA</h1>
-                    <p>Fale sem pressa. o silêncio também é cuidado.</p>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <div class="brand">
+                    <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22V10M12 10C10 10 8 8.5 8 6.5S9.5 3 12 3s4 1.5 4 3.5S14 10 12 10zM8 14c-2 0-4-1-4-3s2-3 4-3M16 14c2 0 4-1 4-3s-2-3-4-3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="brand-text">
+                        <h2>TarapIA</h2>
+                        <span>espaço de escuta</span>
+                    </div>
                 </div>
                 
-                <div id="chat-box" class="chat-flow">
-                    <!-- mensagens aparecem aqui -->
+                <div class="welcome-text">
+                    <h1>Você não precisa ter todas as respostas agora.</h1>
+                    <p>Este é um espaço seguro para você ser você.</p>
                 </div>
             </div>
 
-            <div class="input-lane">
-                <div class="input-wrapper">
-                    <input type="text" id="message-input" placeholder="digite sua mensagem..." autocomplete="off">
-                    <button id="send-button" class="send-btn">→</button>
-                </div>
-                <div class="input-hint">pressione enter para enviar</div>
+            <div class="sidebar-illustration">
+                <img src="image/image.png" alt="Decoração MenteSerena">
             </div>
-        </div>
-    </main>
+
+            <div class="privacy-card">
+                <div class="privacy-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span>Privacidade e segurança</span>
+                </div>
+                <p>Suas mensagens são confidenciais e não ficam salvas após o fim da sessão.</p>
+            </div>
+        </aside>
+        
+        <main class="main-therapy">
+            <div class="glass-panel">
+                <div class="session-bar">
+                    <div class="session-meta">
+                        <span class="session-label">SESSÃO ATUAL</span>
+                        <span id="connection-status" class="status-offline">OFFLINE</span>
+                    </div>
+                    <div class="session-actions">
+                        <button id="iniciarBtn" class="action-btn">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                            INICIAR
+                        </button>
+                        <button id="limparBtn" class="action-btn">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            LIMPAR
+                        </button>
+                        <button id="encerrarBtn" class="action-btn">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 9l6 3-6 3V9z"/></svg>
+                            ENCERRAR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-core">
+                    <div class="therapist-intro">
+                        <div class="intro-title">
+                            
+                            <h1>Sobre o que gostaria de conversar?</h1>
+                        </div>
+                        <p>fale sem pressa. o silêncio também é cuidado.</p>
+                    </div>
+                    
+                    <div id="chat-box" class="chat-flow">
+                        </div>
+                </div>
+
+                <div class="input-lane">
+                    <div class="input-wrapper">
+                        <input type="text" id="message-input" placeholder="Digite sua mensagem..." autocomplete="off">
+                        <button id="send-button" class="send-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-hint">pressione enter para enviar</div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

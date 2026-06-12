@@ -1,4 +1,4 @@
-const URL_BACKEND = 'https://back-chatbot-2.onrender.com/' 
+const URL_BACKEND = 'https://back-chatbot-2.onrender.com/';
 
 document.addEventListener('DOMContentLoaded', () => {
     let socket = null;
@@ -18,35 +18,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');
 
-        if (sender.toLowerCase() === 'user') {
+        // Define as classes estruturais com base no remetente e tipo
+        if (type === 'status') {
+            messageElement.classList.add('status-message');
+            sender = 'status';
+        } else if (type === 'error') {
+            messageElement.classList.add('status-message', 'error-text');
+            sender = 'erro';
+        } else if (sender.toLowerCase() === 'user') {
             messageElement.classList.add('user-message');
             sender = 'Você';
         } else if (sender.toLowerCase() === 'bot') {
             messageElement.classList.add('bot-message');
             sender = 'Bot';
-        } else {
-            messageElement.classList.add('status-message');
         }
 
-        if (type === 'error') {
-            messageElement.classList.add('error-text');
-            sender = 'Erro';
-        } else if (type === 'status') {
-            messageElement.classList.add('status-text');
-            sender = 'Status';
-        }
-
+        // Tag de controle do remetente (oculta por padrão no CSS dos balões comuns)
         const senderSpan = document.createElement('strong');
         senderSpan.textContent = `${sender}: `;
         messageElement.appendChild(senderSpan);
 
+        // Container textual da mensagem
         const textSpan = document.createElement('span');
         
-        // Se for uma mensagem normal (bot ou usuário), renderiza o Markdown
         if (type === 'normal') {
             textSpan.innerHTML = marked.parse(text);
         } else {
-            // Se for erro ou status, mantém como texto puro
             textSpan.textContent = text;
         }
         
@@ -56,37 +53,60 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // Função para habilitar/desabilitar o chat
+    // Função para habilitar/desabilitar as ações de digitação no chat
     function setChatEnabled(enabled) {
         messageInput.disabled = !enabled;
         sendButton.disabled = !enabled;
     }
 
-    // Inicialmente desativa o chat
+    // Configuração do Estado Inicial Real do Sistema
     setChatEnabled(false);
-    connectionStatus.textContent = 'Desconectado';
-    connectionStatus.className = 'status-offline';
-    addMessageToChat('Status', 'Clique em "Iniciar conversa" para começar.', 'status');
+    connectionStatus.textContent = 'OFFLINE';
+    connectionStatus.className = 'status-offline'; 
+    addMessageToChat('status', 'Clique em "Iniciar conversa" para começar.', 'status');
 
-    // Função para conectar ao servidor
+    // Função para gerenciar a conexão Socket.IO
     function iniciarConversa() {
         if (socket && socket.connected) return;
 
-        socket = io(URL_BACKEND);
+        // Feedback imediato de carregamento na interface
+        connectionStatus.textContent = 'CONECTANDO...';
+        connectionStatus.className = 'status-offline';
+
+        // Abre a conexão configurando transports para evitar problemas de proxy/cors no Render
+        socket = io(URL_BACKEND, {
+            transports: ['websocket', 'polling'],
+            timeout: 10000 // Limite de 10 segundos para responder
+        });
 
         socket.on('connect', () => {
             console.log('Conectado ao servidor Socket.IO! SID:', socket.id);
-            connectionStatus.textContent = 'Conectado';
+            connectionStatus.textContent = 'CONECTADO';
             connectionStatus.className = 'status-online';
-            addMessageToChat('Status', 'Conectado ao servidor de chat.', 'status');
+            
+            // Limpa o aviso inicial ao conectar com sucesso
+            if (chatBox.innerHTML.includes('Clique em "Iniciar conversa"')) {
+                chatBox.innerHTML = '';
+            }
+            
+            addMessageToChat('status', 'Status: Conectado ao servidor de chat.', 'status');
             setChatEnabled(true);
         });
 
         socket.on('disconnect', () => {
             console.log('Desconectado do servidor Socket.IO.');
-            connectionStatus.textContent = 'Desconectado';
+            connectionStatus.textContent = 'OFFLINE';
             connectionStatus.className = 'status-offline';
-            addMessageToChat('Status', 'Você foi desconectado.', 'status');
+            addMessageToChat('status', 'Você foi desconectado.', 'status');
+            setChatEnabled(false);
+        });
+
+        // Intercepta falhas explícitas de handshake com o Render
+        socket.on('connect_error', (error) => {
+            console.error('Falha na tentativa de conexão:', error);
+            connectionStatus.textContent = 'OFFLINE';
+            connectionStatus.className = 'status-offline';
+            addMessageToChat('erro', 'Não foi possível estabelecer conexão com o servidor de chat.', 'error');
             setChatEnabled(false);
         });
 
@@ -101,26 +121,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         socket.on('erro', (data) => {
-            addMessageToChat('Erro', data.erro, 'error');
+            addMessageToChat('erro', data.erro, 'error');
         });
     }
 
-    // Função para encerrar a conversa
+    // Função para encerrar a conversa atual
     function encerrarConversa() {
         if (socket && socket.connected) {
             socket.disconnect();
             setChatEnabled(false);
-            addMessageToChat('Status', 'Conversa encerrada pelo usuário.', 'status');
+            addMessageToChat('status', 'Conversa encerrada pelo usuário.', 'status');
         }
     }
 
-    // Função para limpar as mensagens da tela
+    // Função para limpar o feed de mensagens da tela
     function limparTela() {
-        chatBox.innerHTML = ''; // Isso apaga todo o HTML de dentro da caixa de chat
-        addMessageToChat('Status', 'Tela limpa.', 'status');
+        chatBox.innerHTML = ''; 
+        addMessageToChat('status', 'Tela limpa.', 'status');
     }
 
-    // Enviar mensagem para o servidor
+    // Enviar mensagem do input para a API do backend
     function sendMessageToServer() {
         const messageText = messageInput.value.trim();
         if (messageText === '') return;
@@ -131,11 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
             messageInput.value = '';
             messageInput.focus();
         } else {
-            addMessageToChat('Erro', 'Não conectado ao servidor.', 'error');
+            addMessageToChat('erro', 'Não conectado ao servidor.', 'error');
         }
     }
 
-    // Eventos dos botões
+    // Event Listeners dos botões e teclado
     iniciarBtn.addEventListener('click', iniciarConversa);
     encerrarBtn.addEventListener('click', encerrarConversa);
     limparBtn.addEventListener('click', limparTela);
@@ -147,4 +167,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
