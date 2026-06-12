@@ -412,24 +412,176 @@ body {
 }
 
 /* ==============================================
-   RESPONSIVIDADE (MOBILE)
+   RESPONSIVIDADE (MOBILE estilo WhatsApp)
    ============================================== */
 @media (max-width: 860px) {
+  /* Impede scrolls desnecessários no fundo da página */
+  body {
+    overflow: hidden;
+  }
+
+  /* O container principal ocupa 100% da tela do celular */
   .app-container {
-    flex-direction: column;
+    height: 100vh;
+    min-height: 100vh;
   }
+
+  /* 1. Remove a Sidebar completamente */
   .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #f0efe9;
-    padding: 1.5rem;
+    display: none !important;
   }
-  .brand { margin-bottom: 1.5rem; }
-  .sidebar-illustration { display: none; } /* Oculta a foto no mobile para poupar espaço */
+  
+  /* 2. Área do Chat vira a tela inteira */
   .main-therapy {
+    padding: 0; 
+    height: 100vh;
+    width: 100%;
+  }
+
+  /* 3. O painel do chat cola nas bordas do aparelho */
+  .glass-panel {
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  /* 4. Barra Superior (Header estilo WhatsApp) */
+  .session-bar {
+    padding: 0.85rem 1rem;
+    background-color: #f4f3ee;
+    border-bottom: 1px solid #e2e0d8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .session-meta {
+    gap: 0.5rem;
+  }
+
+  /* Alinha os três botões horizontalmente */
+  .session-actions {
+    display: flex !important;
+    gap: 0.4rem;
+    align-items: center;
+  }
+
+  /* Estilização dos botões para a tela do celular */
+  .action-btn {
+    padding: 0.5rem;
+    background-color: #edf2ed;
+    border-radius: 0.5rem;
+    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    color: #435b49;
+  }
+
+  /* RECORTE DE TEXTO: Ajustes individuais de cada botão */
+  
+  /* Botão Iniciar: Continua mostrando o texto */
+  #iniciarBtn {
+    padding: 0.5rem 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Botão Limpar: Oculta o texto e centraliza o ícone */
+  #limparBtn {
+    font-size: 0 !important;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  #limparBtn svg {
+    margin: 0;
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Botão Encerrar: Oculta o texto e centraliza o ícone */
+  #encerrarBtn {
+    font-size: 0 !important;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  #encerrarBtn svg {
+    margin: 0;
+    width: 14px;
+    height: 14px;
+  }
+
+  /* 5. Ajustes do fluxo de mensagens */
+  .chat-core {
     padding: 1rem;
   }
-  .glass-panel {
-    height: 70vh;
+
+  .message {
+    max-width: 85%;
+  }
+
+  /* 1. Centraliza todo o bloco de texto no mobile */
+  .therapist-intro {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+  }
+
+  .intro-title {
+    justify-content: center;
+  }
+
+  /* 2. O TRUQUE: Cria o Logo e o Ícone direto pelo CSS */
+  .therapist-intro::before {
+    /* \A faz pular linha no CSS. O white-space abaixo ativa isso */
+    content: " TerapIA \A espaço de escuta"; 
+    white-space: pre-wrap;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* 3. Estiliza a primeira linha (🌿 TarapIA) */
+  .therapist-intro::first-line {
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: #354a3a;
+    letter-spacing: -0.2px;
+  }
+
+  /* 4. Estiliza a segunda linha (espaço de escuta) */
+  /* Como o CSS não separa linhas facilmente, mudamos o estilo geral do bloco 
+     para afetar o "espaço de escuta", já que a primeira linha está protegida acima */
+  .therapist-intro::before {
+    font-size: 0.8rem;
+    color: #6b7c70;
+    line-height: 1.4;
+  }
+
+  /* Campo de texto colado no rodapé */
+  .input-lane {
+    padding: 0.75rem 1rem;
+    background-color: #ffffff;
+    border-top: 1px solid #f0efe9;
+  }
+
+  /* REMOVE O TEXTO "pressione enter para enviar" */
+  .input-hint {
+    display: none !important;
+  }
+
+  /* Centraliza a introdução do chat no mobile */
+  .therapist-intro {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .intro-title {
+    justify-content: center;
   }
 }
