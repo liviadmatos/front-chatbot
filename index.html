@@ -2,34 +2,49 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot com Flask-SocketIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Refúgio · Terapia por IA</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="chat-container">
-      <figure>
-          <img src="https://img.freepik.com/vetores-premium/chatbot-rede-neural-ai-servidores-e-tecnologia-de-robos-cute-chatbot-ai-personagem_651808-563.jpg?semt=ais_hybrid&w=740">
-      </figure>
-        <div id="controles">
-            <button id="iniciarBtn">Iniciar conversa</button>
-            <button id="limparBtn">Limpar tela</button>
-            <button id="encerrarBtn">Encerrar conversa</button>
-      </div>
-    </div>
-
-    <div class="chat-container">
-        <header class="chat-header">
-            <h1>Chatbot Amigável</h1>
-            <div id="connection-status" class="status-offline">Conectando...</div>
-        </header>
-        <div id="chat-box" class="chat-box">
+    <div class="ambient-bg"></div>
+    
+    <main class="main-therapy">
+        <div class="glass-panel">
+            <div class="session-bar">
+                <div class="session-meta">
+                    <span class="session-label">Sessão atual</span>
+                    <span class="session-status" id="connection-status">offline</span>
+                </div>
+                <div class="session-actions">
+                    <button id="iniciarBtn" class="action-btn subtle">iniciar</button>
+                    <button id="limparBtn" class="action-btn subtle">limpar</button>
+                    <button id="encerrarBtn" class="action-btn subtle">encerrar</button>
+                </div>
             </div>
-        <footer class="chat-input-area">
-            <input type="text" id="message-input" placeholder="Digite sua mensagem aqui...">
-            <button id="send-button">Enviar</button>
-        </footer>
-    </div>
+
+            <div class="chat-core">
+                <div class="therapist-intro">
+                    <div class="intro-symbol"></div>
+                    <h1>TerapIA</h1>
+                    <p>Fale sem pressa. o silêncio também é cuidado.</p>
+                </div>
+                
+                <div id="chat-box" class="chat-flow">
+                    <!-- mensagens aparecem aqui -->
+                </div>
+            </div>
+
+            <div class="input-lane">
+                <div class="input-wrapper">
+                    <input type="text" id="message-input" placeholder="digite sua mensagem..." autocomplete="off">
+                    <button id="send-button" class="send-btn">→</button>
+                </div>
+                <div class="input-hint">pressione enter para enviar</div>
+            </div>
+        </div>
+    </main>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
